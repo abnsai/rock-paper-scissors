@@ -1,0 +1,10 @@
+/* styles.css */
+#results {
+  margin-top: 20px;
+  font-size: 1.2em;
+}
+
+#buttons {
+    display: flex;
+    gap: 10px;
+}

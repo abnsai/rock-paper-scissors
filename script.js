@@ -1,5 +1,6 @@
 // script.js
-console.log("Hello World");
+let humanScore = 0;
+let computerScore = 0;
 
 function getComputerChoice() {
   const choices = ["rock", "paper", "scissors"];
@@ -7,61 +8,45 @@ function getComputerChoice() {
   return choices[randomIndex];
 }
 
-function getHumanChoice() {
-    let humanChoice;
-    while (true) {
-        humanChoice = prompt("Enter your choice (rock, paper, or scissors):").toLowerCase();
-        if (humanChoice === "rock" || humanChoice === "paper" || humanChoice === "scissors") {
-            break; // Valid input, exit the loop
-        } else {
-            alert("Invalid input. Please enter rock, paper, or scissors.");
-        }
-    }
-    return humanChoice;
-}
+function playRound(playerSelection) {
+  const computerSelection = getComputerChoice();
 
-function playRound(humanChoice, computerChoice) {  // playRound is now GLOBAL
-    humanChoice = humanChoice.toLowerCase();
+  let resultMessage;
 
-    if (humanChoice === computerChoice) {
-      return "It's a tie!";
-    } else if (
-      (humanChoice === "rock" && computerChoice === "scissors") ||
-      (humanChoice === "paper" && computerChoice === "rock") ||
-      (humanChoice === "scissors" && computerChoice === "paper")
-    ) {
-      humanScore++; // Accessing global variables inside the function
-      return "You win! " + humanChoice + " beats " + computerChoice;
-    } else {
-      computerScore++; // Accessing global variables inside the function
-      return "You lose! " + computerChoice + " beats " + humanChoice;
-    }
-  }
-
-let humanScore = 0; // Declare the score variables globally
-let computerScore = 0;
-
-function playGame() {
-
-
-  for (let i = 0; i < 5; i++) {
-    const humanChoice = getHumanChoice();
-    const computerChoice = getComputerChoice();
-    const result = playRound(humanChoice, computerChoice);
-    console.log(result);
-  }
-
-  console.log("Final Scores:");
-  console.log("Human: " + humanScore);
-  console.log("Computer: " + computerScore);
-
-  if (humanScore > computerScore) {
-    console.log("You are the overall winner!");
-  } else if (computerScore > humanScore) {
-    console.log("The computer is the overall winner!");
+  if (playerSelection === computerSelection) {
+    resultMessage = "It's a tie!";
+  } else if (
+    (playerSelection === "rock" && computerSelection === "scissors") ||
+    (playerSelection === "paper" && computerSelection === "rock") ||
+    (playerSelection === "scissors" && computerSelection === "paper")
+  ) {
+    humanScore++;
+    resultMessage = "You win! " + playerSelection + " beats " + computerSelection;
   } else {
-    console.log("It's a tie game overall!");
+    computerScore++;
+    resultMessage = "You lose! " + computerSelection + " beats " + playerSelection;
   }
+
+  const resultsDiv = document.getElementById("results");
+  resultsDiv.innerHTML = `<p>${resultMessage}</p><p>Human: ${humanScore} Computer: ${computerScore}</p>`;
+
+  if (humanScore >= 5) {
+    resultsDiv.innerHTML += "<p>You are the overall winner!</p>";
+    disableButtons();
+  } else if (computerScore >= 5) {
+    resultsDiv.innerHTML += "<p>The computer is the overall winner!</p>";
+    disableButtons();
+  }
+
+  console.log(resultMessage); // Keep for debugging if needed
 }
 
-playGame();
+function disableButtons() {
+  document.getElementById("rock").disabled = true;
+  document.getElementById("paper").disabled = true;
+  document.getElementById("scissors").disabled = true;
+}
+
+document.getElementById("rock").addEventListener("click", () => playRound("rock"));
+document.getElementById("paper").addEventListener("click", () => playRound("paper"));
+document.getElementById("scissors").addEventListener("click", () => playRound("scissors"));

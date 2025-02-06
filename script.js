@@ -1,3 +1,4 @@
+// script.js
 console.log("Hello World");
 
 function getComputerChoice() {
@@ -19,12 +20,7 @@ function getHumanChoice() {
     return humanChoice;
 }
 
-
-function playGame() {
-  let humanScore = 0;
-  let computerScore = 0;
-
-  function playRound(humanChoice, computerChoice) {
+function playRound(humanChoice, computerChoice) {  // playRound is now GLOBAL
     humanChoice = humanChoice.toLowerCase();
 
     if (humanChoice === computerChoice) {
@@ -34,13 +30,19 @@ function playGame() {
       (humanChoice === "paper" && computerChoice === "rock") ||
       (humanChoice === "scissors" && computerChoice === "paper")
     ) {
-      humanScore++;
+      humanScore++; // Accessing global variables inside the function
       return "You win! " + humanChoice + " beats " + computerChoice;
     } else {
-      computerScore++;
+      computerScore++; // Accessing global variables inside the function
       return "You lose! " + computerChoice + " beats " + humanChoice;
     }
   }
+
+let humanScore = 0; // Declare the score variables globally
+let computerScore = 0;
+
+function playGame() {
+
 
   for (let i = 0; i < 5; i++) {
     const humanChoice = getHumanChoice();
